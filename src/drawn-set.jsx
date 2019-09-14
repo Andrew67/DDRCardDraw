@@ -10,6 +10,38 @@ function getRandomGradiant() {
   return `linear-gradient(hsl(${hue}, 50%, 80%), white, white)`;
 }
 
+/**
+ * Takes in a drawing that has fake draws (for animation purposes) and returns an array of arrays, where each sub-array
+ * contains the real chart followed by the fakes
+ * @param drawing
+ */
+function mergeDraws(drawing) {
+  const mergedDraws = [];
+  drawing.charts.forEach(function (chart, idx) {
+    const mergedSingle = [];
+    mergedSingle.push(chart);
+    if (drawing.fakeDraws) {
+      drawing.fakeDraws.forEach(function (draw) {
+        if (draw.charts[idx]) mergedSingle.push(draw.charts[idx]);
+      });
+    }
+    mergedDraws.push(mergedSingle);
+  });
+  return mergedDraws;
+}
+
+/**
+ * Takes in an item from {@link mergeDraws} and returns it in plain chart format, but with a fakeJackets array included
+ * @param mergedDrawItem
+ */
+function singleDraw(mergedDrawItem) {
+  const singleDraw = Object.assign({ fakeJackets: [] }, mergedDrawItem[0]);
+  for (let i = 1; i < mergedDrawItem.length; ++i) {
+    singleDraw.fakeJackets.push(mergedDrawItem[i].jacket);
+  }
+  return singleDraw;
+}
+
 export class DrawnSet extends Component {
   _background = getRandomGradiant();
 
@@ -17,7 +49,7 @@ export class DrawnSet extends Component {
     const { drawing } = this.props;
     return (
       <div key={drawing.id} className={styles.chartList} style={{ backgroundImage: this._background }}>
-        {drawing.charts.map(this.renderChart)}
+        {mergeDraws(drawing).map(singleDraw).map(this.renderChart)}
       </div>
     );
   }

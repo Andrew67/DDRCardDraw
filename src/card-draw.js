@@ -12,6 +12,19 @@ let drawingID = 0;
  * @param {FormData} configData the data gathered by all form elements on the page, indexed by `name` attribute
  */
 export function draw(songs, configData) {
+  // if user requests animation, do 3 fake additional draws in order to have more songs to flicker through,
+  // otherwise keep the original behavior
+  const doAnimation = !!configData.get("animate");
+  if (!doAnimation) return doDraw(songs, configData);
+  else {
+    const draw = doDraw(songs, configData);
+    draw.fakeDraws = [];
+    times(3, () => draw.fakeDraws.push(doDraw(songs, configData)));
+    return draw;
+  }
+}
+
+function doDraw(songs, configData) {
   const numChartsToRandom = parseInt(configData.get("chartCount"), 10);
   const upperBound = parseInt(configData.get("upperBound"), 10);
   const lowerBound = parseInt(configData.get("lowerBound"), 10);

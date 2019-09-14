@@ -110,6 +110,7 @@ export class Controls extends Component {
   state = Object.assign(
     {
       weighted: false,
+      animate: false,
       collapsed: false
     },
     dataSetConfigs[DEFAULT_DATA_SET]
@@ -251,6 +252,17 @@ export class Controls extends Component {
                 ))}
               </div>
             )}
+            <div className={styles.group}>
+              <label>
+                <input
+                    type="checkbox"
+                    name="animate"
+                    checked={this.state.animate}
+                    onChange={this.handleAnimateChange}
+                />
+                Use dramatic animation
+              </label>
+            </div>
             <div className={globalStyles.padded}>
               <button onClick={this.handleRandomize}>Draw!</button>{" "}
               {canPromote && (
@@ -357,6 +369,12 @@ export class Controls extends Component {
   handleWeightedChange = e => {
     this.setState({
       weighted: e.currentTarget.checked
+    });
+  };
+
+  handleAnimateChange = e => {
+    this.setState({
+      animate: e.currentTarget.checked
     });
   };
 

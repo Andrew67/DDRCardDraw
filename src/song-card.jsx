@@ -16,6 +16,7 @@ export class SongCard extends Component {
       vetoed,
       abbreviation,
       jacket,
+      fakeJackets,
     } = this.props;
 
     const rootClassname = classNames(
@@ -27,15 +28,22 @@ export class SongCard extends Component {
     );
 
     let jacketBg = {};
+    let fakeJacketBgs = [];
     if (jacket) {
       jacketBg = {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("jackets/${jacket}")`,
       };
+      fakeJacketBgs = fakeJackets.map((jacket, idx) => { return {
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("jackets/${jacket}")`,
+        animationDelay: `${-125 + 250*idx}ms`,
+        animationIterationCount: `${5 + this.__key * 2}`,
+      }});
     }
 
     return (
       <div className={rootClassname} onClick={this.props.onVeto}>
         <div className={styles.cardCenter} style={jacketBg}>
+          {fakeJacketBgs.map(this.renderFakeJacket)}
           <div className={styles.name} title={nameTranslation}>
             {name}
           </div>
@@ -66,4 +74,8 @@ export class SongCard extends Component {
       vetoed: !prevState.vetoed,
     }));
   }
+
+  renderFakeJacket = (fakeJacketBg) => {
+    return (<div className={styles.fakeJacket} style={fakeJacketBg}/>);
+  };
 }
