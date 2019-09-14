@@ -29,16 +29,19 @@ export class SongCard extends Component {
 
     let jacketBg = {};
     let fakeJacketBgs = [];
+    let fadeInDelay = 0;
     if (jacket) {
       jacketBg = {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("jackets/${jacket}")`,
       };
       fakeJacketBgs = fakeJackets.map((jacket, idx) => { return {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("jackets/${jacket}")`,
-        animationDelay: `${-125 + 250*idx}ms`,
-        animationIterationCount: `${5 + this.__key * 2}`,
+        animationDelay: `${-125 + 63*idx}ms`,
+        animationIterationCount: `${5 + this.__key * 3}`,
       }});
     }
+    if (fakeJacketBgs.length > 0) fadeInDelay = 2 + this.__key;
+    const fadeInStyle = { animationDuration: `${fadeInDelay}s` };
 
     return (
       <div className={rootClassname} onClick={this.props.onVeto}>
@@ -55,15 +58,15 @@ export class SongCard extends Component {
           </div>
         </div>
         <div className={styles.cardFooter}>
-          <div className={styles.bpm}>{bpm} BPM</div>
+          <div className={styles.bpm} style={fadeInStyle}>{bpm} BPM</div>
           {hasShock && (
-            <div className={styles.shockBadge} title="Shock Arrows">
+            <div className={styles.shockBadge} style={fadeInStyle} title="Shock Arrows">
               <svg height="100%" className="octicon octicon-zap" viewBox="0 0 10 16" version="1.1" ariaHidden="true">
                 <path fillRule="evenodd" d="M10 7H6l3-7-9 9h4l-3 7 9-9z" />
               </svg>
             </div>
           )}
-          <div className={styles.difficulty}>{abbreviation} {level}</div>
+          <div className={styles.difficulty} style={fadeInStyle}>{abbreviation} {level}</div>
         </div>
       </div>
     );
