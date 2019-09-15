@@ -29,7 +29,7 @@ export class SongCard extends Component {
 
     let jacketBg = {};
     let fakeJacketBgs = [];
-    let fadeInDelay = 0;
+    let revealDelay = 0;
     if (jacket) {
       jacketBg = {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("jackets/${jacket}")`,
@@ -40,33 +40,33 @@ export class SongCard extends Component {
         animationIterationCount: `${5 + this.__key * 3}`,
       }});
     }
-    if (fakeJacketBgs.length > 0) fadeInDelay = 2 + this.__key;
-    const fadeInStyle = { animationDuration: `${fadeInDelay}s` };
+    if (fakeJacketBgs.length > 0) revealDelay = 2 + this.__key * 1.05;
+    const revealDelayStyle = { animationDuration: `${revealDelay}s` };
 
     return (
       <div className={rootClassname} onClick={this.props.onVeto}>
         <div className={styles.cardCenter} style={jacketBg}>
           {fakeJacketBgs.map(this.renderFakeJacket)}
-          <div className={styles.name} title={nameTranslation}>
+          <div className={styles.name} title={nameTranslation} style={revealDelayStyle}>
             {name}
           </div>
-          <div className={styles.nameTranslation}>
+          <div className={styles.nameTranslation} style={revealDelayStyle}>
             {nameTranslation}
           </div>
-          <div className={styles.artist} title={artistTranslation}>
+          <div className={styles.artist} title={artistTranslation} style={revealDelayStyle}>
             {artist}
           </div>
         </div>
         <div className={styles.cardFooter}>
-          <div className={styles.bpm} style={fadeInStyle}>{bpm} BPM</div>
+          <div className={styles.bpm} style={revealDelayStyle}>{bpm} BPM</div>
           {hasShock && (
-            <div className={styles.shockBadge} style={fadeInStyle} title="Shock Arrows">
+            <div className={styles.shockBadge} style={revealDelayStyle} title="Shock Arrows">
               <svg height="100%" className="octicon octicon-zap" viewBox="0 0 10 16" version="1.1" ariaHidden="true">
                 <path fillRule="evenodd" d="M10 7H6l3-7-9 9h4l-3 7 9-9z" />
               </svg>
             </div>
           )}
-          <div className={styles.difficulty} style={fadeInStyle}>{abbreviation} {level}</div>
+          <div className={styles.difficulty} style={revealDelayStyle}>{abbreviation} {level}</div>
         </div>
       </div>
     );

@@ -59,7 +59,21 @@
 @keyframes blur-in {
   from { filter: blur(4px); }
   50% { filter: blur(4px); }
-  to { filter: blur(0px); }
+  to { filter: blur(0); }
+}
+
+@keyframes fade-in-blurred {
+  from {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
 }
 
 .name {
@@ -77,6 +91,10 @@
   padding: 5px;
   align-items: flex-end;
   border-top: 1px solid black;
+}
+
+.name, .nameTranslation, .artist {
+  animation-name: fade-in-blurred;
 }
 
 .cardFooter > div {
